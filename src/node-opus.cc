@@ -1,16 +1,10 @@
 
-#include <v8.h>
-#include <node.h>
-#include <node_buffer.h>
-#include <node_object_wrap.h>
 #include "../deps/opus/include/opus.h"
 #include "common.h"
-#include <nan.h>
+
+#include <napi.h>
 
 #include <string.h>
-
-using namespace node;
-using namespace v8;
 
 #define FRAME_SIZE 960
 #define MAX_FRAME_SIZE 6*960
@@ -241,8 +235,25 @@ class OpusEncoder : public ObjectWrap {
 };
 
 
-void NodeInit( Local< Object > exports ) {
+/*void NodeInit( Local< Object > exports ) {
 	OpusEncoder::Init( exports );
+}*/
+
+//NODE_MODULE(node_opus, NodeInit)
+
+class OpusEncoder : public Napi::ObjectWrap<OpusEncoder> {
+	public:
+		static Napi::Object Init(Napi::Env env, Napi::Object exports) {
+
+		}
+		
+	private:
+	protected:
 }
 
-NODE_MODULE(node_opus, NodeInit)
+Napi::Object Init(Napi::Env env, Napi::Object exports) {
+	OpusEncoder::Init(env, exports);
+	return exports;
+}
+
+NODE_API_MODULE(NODE_GYP_MODULE_NAME, NodeInit)
